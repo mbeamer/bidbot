@@ -284,6 +284,7 @@ namespace BidBot
             this.MainMenuStrip = this.musMain;
             this.Name = "frmMain";
             this.Text = "BidBot";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.cmsItems.ResumeLayout(false);
             this.musMain.ResumeLayout(false);
             this.musMain.PerformLayout();

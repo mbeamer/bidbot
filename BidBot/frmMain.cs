@@ -24,16 +24,26 @@ namespace BidBot
         public frmMain()
         {
             InitializeComponent();
-            this.globalSettings = new();
-            this.bidReader = new(this.globalSettings.eqLogPath);
-            this.bsBids.DataSource = this.bidReader.bidItems;
-            this.bidReader.PropertyChanged += BidReader_PropertyChanged;
-            lbxBidItems.DataSource = bsBids;
-            this.lbxBidItems.DisplayMember = "BidItem";
-            this.raiders = new clsUsers();
-            this.raiders.loadUsers(this.globalSettings.rosterPath, this.globalSettings.rosterUrl);
         }
 
+        private bool initGlobals()
+        {
+            string settingsPath = @"%AppData%\bidbot_settings.cfg";
+            settingsPath = Environment.ExpandEnvironmentVariables(settingsPath);
+            if (File.Exists(settingsPath))
+            {
+                using StreamReader settingsFile = new(settingsPath);
+                string json = settingsFile.ReadToEnd();
+                this.globalSettings = JsonConvert.DeserializeObject<GlobalSettings>(json);
+                return true;
+            }
+            else
+            {
+                this.globalSettings = new();
+
+                return globalSettings.GetDefaults() == DialogResult.OK;
+            }        
+        }
         private void BidReader_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Action safeUpdate = delegate
@@ -126,6 +136,28 @@ namespace BidBot
                     string bidAnnouncement = bidItem + ": Won by " + bidWinner + " for " + paidAmount;
                     Clipboard.SetText(bidAnnouncement);
                 }
+            }
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            // Setup external resources
+            if (initGlobals())
+            {
+                this.bidReader = new(this.globalSettings.eqLogPath);
+                this.bidReader.PropertyChanged += BidReader_PropertyChanged;
+
+                this.bsBids.DataSource = this.bidReader.bidItems;
+
+                this.lbxBidItems.DataSource = bsBids;
+                this.lbxBidItems.DisplayMember = "BidItem";
+
+                this.raiders = new clsUsers();
+                this.raiders.loadUsers(this.globalSettings.rosterPath, this.globalSettings.rosterUrl);
+            }
+            else
+            {
+                this.Close();
             }
         }
     }

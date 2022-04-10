@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BidBot
 {
@@ -15,36 +16,29 @@ namespace BidBot
         public const string DEFAULT_EQ_LOG_PATH = "C:\\EQ\\Logs\\player.log";
         public const string DEFAULT_PAY_SECOND_BID = "false";
 
+        [JsonProperty("rosterUrl")]
         public string rosterUrl;
+        [JsonProperty("rosterPath")]
         public string rosterPath;
+        [JsonProperty("eqLogPath")]
         public string eqLogPath;
+        [JsonProperty("paySecondBid")]
         public bool paySecondBid;
 
-        public GlobalSettings()
+        public DialogResult GetDefaults()
         {
-            string settingsPath = @"%AppData%\bidbot_settings.cfg";
-            settingsPath = Environment.ExpandEnvironmentVariables(settingsPath);
-            if (File.Exists(settingsPath))
-            {
-                using StreamReader settingsFile = new(settingsPath);
-                string json = settingsFile.ReadToEnd();
-                dynamic settings = JsonConvert.DeserializeObject(json);
-                this.rosterUrl = settings.RosterUrl;
-                this.rosterPath = settings.RosterPath;
-                this.eqLogPath = settings.EQLogPath;
-                this.paySecondBid = settings.paySecondBid;
-            }
-            else
-            {
-                this.rosterUrl = GlobalSettings.DEFAULT_ROSTER_URL;
-                this.rosterPath = GlobalSettings.DEFAULT_ROSTER_PATH;
-                this.eqLogPath = GlobalSettings.DEFAULT_EQ_LOG_PATH;
-                this.paySecondBid = GlobalSettings.DEFAULT_PAY_SECOND_BID == "true";
-            }
+            this.rosterUrl = GlobalSettings.DEFAULT_ROSTER_URL;
+            this.rosterPath = GlobalSettings.DEFAULT_ROSTER_PATH;
+            this.eqLogPath = GlobalSettings.DEFAULT_EQ_LOG_PATH;
+            this.paySecondBid = GlobalSettings.DEFAULT_PAY_SECOND_BID == "true";
+
+            frmSettings settings = new();
+            settings.LoadSettings(this);
+            return settings.ShowDialog();
         }
         public void SaveSettings()
         {
-            string json = $"{{'RosterUrl': '{rosterUrl}', 'RosterPath': '{rosterPath}', 'EQLogPath': '{eqLogPath}', 'paySecondBid': '{paySecondBid}'}}";
+            string json = JsonConvert.SerializeObject(this);
 
             string settingsPath = @"%AppData%\bidbot_settings.cfg";
             settingsPath = Environment.ExpandEnvironmentVariables(settingsPath);

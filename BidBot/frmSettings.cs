@@ -20,6 +20,7 @@ namespace BidBot
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.Cancel;
             this.Hide();
         }
 
@@ -28,6 +29,7 @@ namespace BidBot
             this.globalSettings = globalSettings;
             txtPathToEQLog.Text = globalSettings.eqLogPath;
             txtURLtoRoster.Text = globalSettings.rosterUrl;
+            txtPathToRoster.Text = globalSettings.rosterPath;
             chbPaySecondBid.Checked = globalSettings.paySecondBid;
         }
 
@@ -39,6 +41,8 @@ namespace BidBot
             this.globalSettings.paySecondBid = chbPaySecondBid.Checked;
 
             this.globalSettings.SaveSettings();
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

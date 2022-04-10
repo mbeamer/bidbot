@@ -202,7 +202,7 @@ namespace BidBot
             this.aTimer.Enabled = false;
             try
             {
-                using (FileStream SourceStream = File.Open(this.readerFile, FileMode.Open))
+                using (FileStream SourceStream = File.Open(this.readerFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     ArrayList Bid = new ArrayList();
 
