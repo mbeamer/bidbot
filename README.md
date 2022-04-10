@@ -34,8 +34,9 @@ Run the app on the computer which has access to your log files.
 ## Bidding
 The format of bids matters!
 
-```[Item Link] [Bid Amount]```
-```Endowed Illuminator Vambraces 502```
+```/tell someOfficer [Item Link] [Bid Amount]```
+
+```/tell Midasa Endowed Illuminator Vambraces 502```
 
 * Item links: come from ctrl+click on the icon in the gear window.
 * Bid Amount: Simply the amount you'd like to spend for the item.
