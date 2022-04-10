@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.IO;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace BidBot
 {
@@ -140,7 +141,7 @@ namespace BidBot
         {
             clsUser matchingUser;
 
-            matchingUser = this.users.Find(x => x.name == tempUser.name);
+            matchingUser = this.users.First(x => x.name == tempUser.name);
             if (matchingUser != null)
             {
                 matchingUser.attendance90 = tempUser.attendance90;
@@ -153,9 +154,17 @@ namespace BidBot
 
         public int getBidType(string bidder)
         {
-            return this.users.SingleOrDefault(x => x.name.Equals(bidder)).getBidOrder();
+            return this.users.Single(x => x.name.Equals(bidder)).getBidOrder();
         }
 
+        public int getBidattendance90(string bidder)
+        {
+            return this.users.Single(x => x.name.Equals(bidder)).attendance90;
+        }
+        public int getBidattendance30(string bidder)
+        {
+            return this.users.Single(x => x.name.Equals(bidder)).attendance30;
+        }
         public string getBidTypeName(int bidType)
         {
             return BID_ORDER_NAMES[bidType];
@@ -197,6 +206,19 @@ namespace BidBot
                                 // Name
                                 pattern = "    <td .*>(.*)</a></td>";
                                 tempUser.name = lookupPattern(pattern, line);
+                                if (tempUser.name == "")
+                                {
+                                    // Recruit name pattern
+                                    pattern = "    <td .*>(.*)</font>";
+                                    tempUser.name = lookupPattern(pattern, line);
+                                }
+                                if (tempUser.name == "")
+                                {
+                                    // Officer name pattern
+                                    pattern = "    <td .*>(.*)</b>";
+                                    tempUser.name = lookupPattern(pattern, line);
+
+                                }
                                 break;
                             case 4:
                                 // DKP Balance

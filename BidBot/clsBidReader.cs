@@ -24,15 +24,19 @@ namespace BidBot
         public int bidType;
         public string bidTypeName;
         public bool alt;
+        public int attendance90;
+        public int attendance30;
 
         public int CompareTo(Bid compareBid)
         {
+            System.Diagnostics.Debug.WriteLine($"Compare {this.bidder} to {compareBid.bidder}:");
+
             // Check bidder type precidence
             if (this.bidType > compareBid.bidType)
             {
-                return -1;
-            } else if (this.bidType < compareBid.bidType) {
                 return 1;
+            } else if (this.bidType < compareBid.bidType) {
+                return -1;
             }
 
             // Check bid amount
@@ -51,6 +55,27 @@ namespace BidBot
             }  else if (this.timestamp < compareBid.timestamp)
             {
                 return -1;
+            }
+
+            // Check 90-day attendance
+            if (this.attendance90 > compareBid.attendance90)
+            {
+                return -1;
+            }
+            else if (this.attendance90 < compareBid.attendance90)
+            {
+                return 1;
+            }
+            return 0;
+
+            // Check 30-day attendance
+            if (this.attendance30 > compareBid.attendance30)
+            {
+                return -1;
+            }
+            else if (this.attendance30 < compareBid.attendance30)
+            {
+                return 1;
             }
             return 0;
         }
@@ -182,6 +207,8 @@ namespace BidBot
                     newBid.item = groups[3].Value;
                     newBid.amount = Int32.Parse(groups[4].Value);
                     newBid.bidType = this.users.getBidType(newBid.bidder);
+                    newBid.attendance90 = this.users.getBidattendance90(newBid.bidder);
+                    newBid.attendance30 = this.users.getBidattendance30(newBid.bidder);
                     newBid.bidTypeName = this.users.getBidTypeName(newBid.bidType);
                     newBid.alt = groups.Count > 3;
 
