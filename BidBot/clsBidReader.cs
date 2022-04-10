@@ -208,9 +208,9 @@ namespace BidBot
 
                     long thisReadPosition = this.previousReadPosition;
                     this.previousReadPosition = SourceStream.Length;
-                    result = new byte[SourceStream.Length + 1];
                     if (SourceStream.Length > thisReadPosition)
                     {
+                        result = new byte[SourceStream.Length - thisReadPosition + 1];
                         SourceStream.Seek(thisReadPosition, SeekOrigin.Begin);
                         SourceStream.Read(result, 0, (int)(this.previousReadPosition - thisReadPosition));
 

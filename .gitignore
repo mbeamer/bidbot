@@ -1,3 +1,4 @@
 .vs
-bin/Debug/
+Debug/
 obj/
+BidBot.runtimeconfig.dev.json
