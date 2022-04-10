@@ -1,7 +1,7 @@
 # Bidbot
 The bot is designed to read Everquest log files and extract well formatted bids for the items after an event.
 
-![BidBot main screen](https://github.com/mbeamer/BidBot/BidBot.png "BidBot in action")
+![BidBot main screen](https://github.com/mbeamer/bidbot/blob/master/BidBot.png "BidBot in action")
 
 ## Configuration
 To get started the bot requires:
