@@ -35,9 +35,10 @@ Run the app on the computer which has access to your log files.
 The format of bids matters!
 
 ```[Item Link] [Bid Amount]```
+```Endowed Illuminator Vambraces 502```
 
-Item links: come from ctrl+click on the icon in the gear window.
-Bid Amount: Simply the amount you'd like to spend for the item.
+* Item links: come from ctrl+click on the icon in the gear window.
+* Bid Amount: Simply the amount you'd like to spend for the item.
 
-Bids which do not conform to this format will be disregarded.  As well, bids from players no in the guild dump will be ignored.
+Bids which do not conform to this format will be disregarded.  As well, bids from players not in the guild dump will be ignored.
 
